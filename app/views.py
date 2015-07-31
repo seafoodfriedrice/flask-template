@@ -20,12 +20,12 @@ def index():
 
 
 @app.route("/<employee>")
-def employee():
+def employee(employee):
     pass
 
 
 @app.route("/<department_name>")
-def department_name():
+def department_name(department_name):
     pass
 
 
