@@ -24,7 +24,7 @@ def EmployeeForm(Form):
     department = QuerySelectField(get_label='department_name',
                                   query_factory=department_names)
     hire_date = DateTimeField(u'Hire Date', default=datetime(2000, 1, 1),
-                              validators[Optional()])
+                              validators=[Optional()])
     is_veteran = BooleanField(u'Veteran', default=False,
                               validators=[Optional()])
     notes = TextAreaField(u'Notes', validators=[Optional()])
