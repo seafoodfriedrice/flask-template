@@ -27,7 +27,7 @@ def add_user():
         return
     password = ""
     password2 = ""
-    while not (password and password2 or get_pass != password2
+    while not (password and password2 or get_pass != password2):
         password = getpass("Password: ")
         password2 = getpass("Re-enter password: ")
     user = User(username=username, password=generate_password_hash(password))
