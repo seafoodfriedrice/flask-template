@@ -15,7 +15,7 @@ from app.models import Department
 def department_names():
     return Department.query.order_by(Department.department_name)
 
-def EmployeeForm(Form):
+class EmployeeForm(Form):
     first_name = StringField(u'First Name', validators=[Required(),
                                                         Length(max=48)])
     last_name = StringField(u'Last Name', validators=[Required(),
