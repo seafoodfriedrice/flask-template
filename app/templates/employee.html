@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% if action == "edit" %}
 <script>
 $(document).ready(function() {
   $("input[type='text']").change(function() {
@@ -7,6 +8,7 @@ $(document).ready(function() {
   });
 });
 </script>
+{% endif %}
 <div class="container-fluid">
   {% if action == "add" %}<h1>Add Employee</h1>{% endif %}
   {% if action == "edit" %}<h1>Edit Employee</h1>{% endif %}
@@ -24,10 +26,12 @@ $(document).ready(function() {
       {{ form.age.label(class="control-label") }}
       {{ form.age(class="form-control") }}
     </div>
+    {% if action == "edit" %}
     <div class="form-group hidden" id="change-form">
       {{ change_form.text.label(class="control-label") }}
       {{ change_form.text(class="form-control") }}
     </div>
+    {% endif %}
     <div class="form-group">
     {% if action == "add" %}
       <button type="submit" name="submit" class="btn btn-primary" value="Add">Add</button>
