@@ -65,10 +65,11 @@ def employee_edit(id):
                 m = "'{}' => '{}'".format(employee_attr, form_attr)
                 messages.append(m)
         if messages:
-            change_note = ChangeNote(text=change_form.text.data)
-            employee.change_notes.append(change_note)
             flash(", ".join(messages), "success")
             flash("Edited {}".format(employee.first_name), "success")
+            text = "{}: {}".format(", ".join(messages), change_form.text.data)
+            change_note = ChangeNote(text=text)
+            employee.change_notes.append(change_note)
             db.session.add(employee)
             db.session.commit()
         else:
