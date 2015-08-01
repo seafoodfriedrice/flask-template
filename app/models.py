@@ -14,6 +14,9 @@ class Employee(db.Model):
     hire_date = db.Column(db.Date, default=datetime(2000, 1, 1))
     is_veteran = db.Column(db.Boolean)
     notes = db.Column(db.Text)
+    created_date = db.Column(db.DateTime, server_default=db.func.now())
+    updated_date = db.Column(db.DateTime, server_default=db.func.now(),
+                             onupdate=db.func.now())
 
     def as_dictionary(self):
         employee = {
