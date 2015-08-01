@@ -62,12 +62,13 @@ def employee_edit(id):
             form_attr = getattr(form, attr).data
             if employee_attr != form_attr:
                 setattr(employee, attr, getattr(form,attr).data)
-                m = "'{}' => '{}'".format(employee_attr, form_attr)
+                m = "{}: '{}' -> '{}'".format(getattr(form, attr).label.text,
+                    employee_attr, form_attr)
                 messages.append(m)
         if messages:
             flash(", ".join(messages), "success")
             flash("Edited {}".format(employee.first_name), "success")
-            text = "{}: {}".format(", ".join(messages), change_form.text.data)
+            text = "{} {}".format(", ".join(messages),change_form.text.data)
             change_note = ChangeNote(text=text)
             employee.change_notes.append(change_note)
             db.session.add(employee)
