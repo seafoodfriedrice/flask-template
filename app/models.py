@@ -17,6 +17,7 @@ class Employee(db.Model):
     created_date = db.Column(db.DateTime, server_default=db.func.now())
     updated_date = db.Column(db.DateTime, server_default=db.func.now(),
                              onupdate=db.func.now())
+    change_notes = db.relationship('ChangeNote', backref='employee')
 
     def as_dictionary(self):
         employee = {
@@ -60,3 +61,10 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(24), unique=True)
     password = db.Column(db.String(64))
+
+class ChangeNote(db.Model):
+    __tablename__ = "change_notes"
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, server_default=db.func.now())
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+    text = db.Column(db.String(1024))
