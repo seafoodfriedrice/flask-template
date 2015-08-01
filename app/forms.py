@@ -29,3 +29,7 @@ class EmployeeForm(Form):
     is_veteran = BooleanField(u'Veteran', default=False,
                               validators=[Optional()])
     notes = TextAreaField(u'Notes', validators=[Optional()])
+
+class ChangeForm(Form):
+     text = TextAreaField(u'Change Notes', validators=[Optional(),
+                                 Length(max=512)])
