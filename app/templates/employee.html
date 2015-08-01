@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+<script>
+$(document).ready(function() {
+  $("input[type='text']").change(function() {
+    $("#change-form").removeClass("hidden");
+  });
+});
+</script>
 <div class="container-fluid">
   {% if action == "add" %}<h1>Add Employee</h1>{% endif %}
   {% if action == "edit" %}<h1>Edit Employee</h1>{% endif %}
@@ -17,9 +24,9 @@
       {{ form.age.label(class="control-label") }}
       {{ form.age(class="form-control") }}
     </div>
-    <div class="form-group">
+    <div class="form-group hidden" id="change-form">
       {{ change_form.text.label(class="control-label") }}
-      {{ change_form.text(class="form-control", value="Hello World") }}
+      {{ change_form.text(class="form-control") }}
     </div>
     <div class="form-group">
     {% if action == "add" %}
