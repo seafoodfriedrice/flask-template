@@ -22,7 +22,8 @@ class EmployeeForm(Form):
                                                       Length(max=48)])
     age = IntegerField(u'Age', validators=[Optional()])
     department = QuerySelectField(get_label='department_name',
-                                  query_factory=department_names)
+                                  query_factory=department_names,
+                                  validators=[Optional()])
     hire_date = DateTimeField(u'Hire Date', default=datetime(2000, 1, 1),
                               validators=[Optional()])
     is_veteran = BooleanField(u'Veteran', default=False,
