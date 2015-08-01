@@ -9,21 +9,78 @@ from flask.ext.login import login_user
 from flask.ext.login import logout_user
 from werkzeug.security import check_password_hash
 from app import app
+from app import db
 from app.models import Employee
 from app.models import Department
 from app.models import User
+from app.models import ChangeNote
+from app.forms import EmployeeForm
+from app.forms import ChangeForm
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    employees = Employee.query.all()
+    departments = Department.query.all()
+    return render_template("index.html", employees=employees,
+                           departments=departments)
+
+def flash_form_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(u"Error in the %s field - %s" % (
+                getattr(form, field).label.text,
+                error), "danger")
+
+@app.route("/employee/add", methods=["GET", "POST"])
+def employee_add():
+    form = EmployeeForm()
+    if form.validate_on_submit():
+        employee = Employee()
+        employee.first_name = form.first_name.data
+        employee.last_name = form.last_name.data
+        employee.age = form.age.data
+        db.session.add(employee)
+        db.session.commit()
+        flash("Added {}".format(employee.first_name), "success")
+        return render_template("index.html")
+    else:
+        flash_form_errors(form)
+    return render_template("employee.html", form=form, action="add")
 
 
-@app.route("/<employee>")
-def employee(employee):
-    pass
+@app.route("/employee/<int:id>", methods=["GET", "POST"])
+def employee_edit(id):
+    employee = Employee.query.get(id)
+    form = EmployeeForm(obj=employee)
+    change_form = ChangeForm()
+    if (form.validate_on_submit() and request.form["submit"] == "Save" and
+            request.method == "POST"):
+        messages = []
+        for attr in ['first_name', 'last_name', 'age']:
+            employee_attr = getattr(employee, attr)
+            form_attr = getattr(form, attr).data
+            if employee_attr != form_attr:
+                setattr(employee, attr, getattr(form,attr).data)
+                m = "'{}' => '{}'".format(employee_attr, form_attr)
+                messages.append(m)
+        if messages:
+            change_note = ChangeNote(text=change_form.text.data)
+            employee.change_notes.append(change_note)
+            flash(", ".join(messages), "success")
+            flash("Edited {}".format(employee.first_name), "success")
+            db.session.add(employee)
+            db.session.commit()
+        else:
+            flash("No changes were made", "info")
+        return redirect(url_for("employee_edit", id=employee.id))
+    else:
+        flash_form_errors(form)
+    return render_template("employee.html", form=form, change_form=change_form,
+                           employee=employee, action="edit")
 
 
+'''
 @app.route("/<department_name>")
 def department_name(department_name):
     pass
@@ -65,3 +122,4 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template("500.html"), 500
+'''
