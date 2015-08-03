@@ -6,6 +6,12 @@ $(document).ready(function() {
   $("input[type='text']").change(function() {
     $("#change-form").removeClass("hidden");
   });
+  $("li > pre").each(function() {
+    var jsonStr = $(this).text();
+    var jsonObj = JSON.parse(jsonStr);
+    var jsonPretty = JSON.stringify(jsonObj, null, 2);
+    $(this).text(jsonPretty);
+  });
 });
 </script>
 {% endif %}
@@ -43,7 +49,12 @@ $(document).ready(function() {
     {% if employee.change_notes %}
     <ul>
       {% for change_note in employee.change_notes %}
-      <li>{{ change_note.date }} {{ change_note.description }}</li>
+      <li>
+        {{ change_note.date }}
+        <pre>{{ change_note.old_value|safe }}</pre>
+        <pre>{{ change_note.new_value|safe }}</pre>
+        {{ change_note.description }}
+      </li>
       {% endfor %}
     </ul>
     {% endif %}
