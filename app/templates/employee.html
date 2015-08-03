@@ -28,8 +28,8 @@ $(document).ready(function() {
     </div>
     {% if action == "edit" %}
     <div class="form-group hidden" id="change-form">
-      {{ change_form.text.label(class="control-label") }}
-      {{ change_form.text(class="form-control") }}
+      {{ change_form.description.label(class="control-label") }}
+      {{ change_form.description(class="form-control") }}
     </div>
     {% endif %}
     <div class="form-group">
@@ -43,7 +43,7 @@ $(document).ready(function() {
     {% if employee.change_notes %}
     <ul>
       {% for change_note in employee.change_notes %}
-      <li>{{ change_note.date }} {{ change_note.text }}</li>
+      <li>{{ change_note.date }} {{ change_note.description }}</li>
       {% endfor %}
     </ul>
     {% endif %}
