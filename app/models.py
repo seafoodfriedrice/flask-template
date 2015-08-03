@@ -1,5 +1,7 @@
 from datetime import datetime
+
 from flask.ext.login import UserMixin
+from sqlalchemy.dialects.postgresql import JSON
 from app import db
 
 
@@ -67,4 +69,6 @@ class ChangeNote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, server_default=db.func.now())
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
-    text = db.Column(db.String(1024))
+    old_value = db.Column(JSON)
+    new_value = db.Column(JSON)
+    description = db.Column(db.String(1024))
