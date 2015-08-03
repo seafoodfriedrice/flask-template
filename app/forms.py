@@ -31,5 +31,5 @@ class EmployeeForm(Form):
     notes = TextAreaField(u'Notes', validators=[Optional()])
 
 class ChangeForm(Form):
-     text = TextAreaField(u'Change Notes', validators=[Optional(),
+     description = TextAreaField(u'Change Notes', validators=[Optional(),
                                  Length(max=512)])
