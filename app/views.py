@@ -1,3 +1,4 @@
+import json
 from flask import render_template
 from flask import request
 from flask import redirect
@@ -56,20 +57,29 @@ def employee_edit(id):
     change_form = ChangeForm()
     if (form.validate_on_submit() and request.form["submit"] == "Save" and
             request.method == "POST"):
-        messages = []
+        old_value = {}
+        new_value = {}
+        changes = False
         for attr in ['first_name', 'last_name', 'age']:
             employee_attr = getattr(employee, attr)
             form_attr = getattr(form, attr).data
             if employee_attr != form_attr:
+                # Set new value from form on Employee attribute
                 setattr(employee, attr, getattr(form,attr).data)
-                m = "{}: '{}' -> '{}'".format(getattr(form, attr).label.text,
-                    employee_attr, form_attr)
-                messages.append(m)
-        if messages:
-            flash(", ".join(messages), "success")
+
+                label = getattr(form, attr).label.text
+                old_value[label] = employee_attr
+                new_value[label] = form_attr
+                changes = True
+
+        if changes:
+            flash("{} to {}".format(old_value, new_value), "success")
             flash("Edited {}".format(employee.first_name), "success")
-            text = "{} {}".format(", ".join(messages),change_form.text.data)
-            change_note = ChangeNote(text=text)
+            change_note = ChangeNote(
+                old_value=json.dumps(old_value),
+                new_value=json.dumps(new_value),
+                description=change_form.description.data
+            )
             employee.change_notes.append(change_note)
             db.session.add(employee)
             db.session.commit()
