@@ -1,19 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
 {% if action == "edit" %}
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<style type="text/css">
+pre.prettyprint {
+  border: 1px solid #ccc;
+  margin-bottom: 0;
+  padding: 9.5px;
+}
+</style>
 <script>
-$(document).ready(function() {
-  $("input[type='text']").change(function() {
-    $("#change-form").removeClass("hidden");
+  $(document).ready(function() {
+    $("input[type='text']").change(function() {
+      $("#change-form").removeClass("hidden");
+    });
+    $("td > pre").each(function() {
+      var jsonStr = $(this).text();
+      var jsonObj = JSON.parse(jsonStr);
+      var jsonPretty = JSON.stringify(jsonObj, null, 2);
+      // Only prettify JSON output if object has
+      // more than one key 
+      if (Object.keys(jsonObj).length > 1) {
+        $(this).text(jsonPretty);
+      }
+    });
+    $('#tabs').tab();
   });
-  $("td > pre").each(function() {
-    var jsonStr = $(this).text();
-    var jsonObj = JSON.parse(jsonStr);
-    var jsonPretty = JSON.stringify(jsonObj, null, 2);
-    $(this).text(jsonPretty);
-  });
-  $('#tabs').tab();
-});
 </script>
 {% endif %} <div class="container-fluid">
   {% if action == "add" %}<h1>Add Employee</h1>{% endif %}
@@ -71,8 +83,8 @@ $(document).ready(function() {
             {% for change_note in employee.change_notes %}
             <tr>
               <td>{{ change_note.date }}</td>
-              <td><pre>{{ change_note.old_value|safe }}</pre></td>
-              <td><pre>{{ change_note.new_value|safe }}</pre></td>
+              <td><pre class="prettyprint">{{ change_note.old_value|safe }}</pre></td>
+              <td><pre class="prettyprint">{{ change_note.new_value|safe }}</pre></td>
               <td>{{ change_note.description }} </td>
             </tr>
             {% endfor %}
