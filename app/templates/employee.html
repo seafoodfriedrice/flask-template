@@ -6,7 +6,7 @@ $(document).ready(function() {
   $("input[type='text']").change(function() {
     $("#change-form").removeClass("hidden");
   });
-  $("li > pre").each(function() {
+  $("td > pre").each(function() {
     var jsonStr = $(this).text();
     var jsonObj = JSON.parse(jsonStr);
     var jsonPretty = JSON.stringify(jsonObj, null, 2);
@@ -25,47 +25,57 @@ $(document).ready(function() {
   </ul>
   <div id="my-tab-content" class="tab-content">
       <div class="tab-pane active" id="details">
-        {{ form.csrf_token }}
-        <div class="form-group">
-          {{ form.first_name.label(class="control-label") }}
-          {{ form.first_name(class="form-control") }}
-        </div>
-        <div class="form-group">
-          {{ form.last_name.label(class="control-label") }}
-          {{ form.last_name(class="form-control") }}
-        </div>
-        <div class="form-group">
-          {{ form.age.label(class="control-label") }}
-          {{ form.age(class="form-control") }}
-        </div>
-        {% if action == "edit" %}
-        <div class="form-group hidden" id="change-form">
-          {{ change_form.description.label(class="control-label") }}
-          {{ change_form.description(class="form-control") }}
-        </div>
-        {% endif %}
-        <div class="form-group">
-          {% if action == "add" %}
-          <button type="submit" name="submit" class="btn btn-primary" value="Add">Add</button>
-          {% endif %}
+        <form class="form" method="POST" class="form">
+          {{ form.csrf_token }}
+          <div class="form-group">
+            {{ form.first_name.label(class="control-label") }}
+            {{ form.first_name(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.last_name.label(class="control-label") }}
+            {{ form.last_name(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.age.label(class="control-label") }}
+            {{ form.age(class="form-control") }}
+          </div>
           {% if action == "edit" %}
-          <button type="submit" name="submit" class="btn btn-primary" value="Save">Save</button>
+          <div class="form-group hidden" id="change-form">
+            {{ change_form.description.label(class="control-label") }}
+            {{ change_form.description(class="form-control") }}
+          </div>
           {% endif %}
-        </div>
+          <div class="form-group">
+            {% if action == "add" %}
+            <button type="submit" name="submit" class="btn btn-primary" value="Add">Add</button>
+            {% endif %}
+            {% if action == "edit" %}
+            <button type="submit" name="submit" class="btn btn-primary" value="Save">Save</button>
+            {% endif %}
+          </div>
+        </form>
       </div>
       <div class="tab-pane" id="history">
-        {% if employee.change_notes %}
-        <ul>
-          {% for change_note in employee.change_notes %}
-          <li>
-          {{ change_note.date }}
-          <pre>{{ change_note.old_value|safe }}</pre>
-          <pre>{{ change_note.new_value|safe }}</pre>
-          {{ change_note.description }}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
+        <table class="table">
+          <thead>
+            <th>Date</th>
+            <th>Old value(s)</th>
+            <th>New value(s)</th>
+            <th>Description</th>
+          </thead>
+          <tbody>
+          {% if employee.change_notes %}
+            {% for change_note in employee.change_notes %}
+            <tr>
+              <td>{{ change_note.date }}</td>
+              <td><pre>{{ change_note.old_value|safe }}</pre></td>
+              <td><pre>{{ change_note.new_value|safe }}</pre></td>
+              <td>{{ change_note.description }} </td>
+            </tr>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
       </div><!-- /#history -->
   </div>
 </div>
