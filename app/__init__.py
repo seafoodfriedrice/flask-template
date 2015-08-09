@@ -1,7 +1,7 @@
 from os import environ
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask_bootstrap import Bootstrap
+from flask.ext.bootstrap import Bootstrap
 
 
 app = Flask(__name__)
