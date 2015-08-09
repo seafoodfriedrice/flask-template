@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block content %}
+{% block content -%}
+{{ super() }}
 {% if action == "edit" %}
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <style type="text/css">
@@ -9,24 +10,6 @@ pre.prettyprint {
   padding: 9.5px;
 }
 </style>
-<script>
-  $(document).ready(function() {
-    $("input[type='text']").change(function() {
-      $("#change-form").removeClass("hidden");
-    });
-    $("td > pre").each(function() {
-      var jsonStr = $(this).text();
-      var jsonObj = JSON.parse(jsonStr);
-      var jsonPretty = JSON.stringify(jsonObj, null, 2);
-      // Only prettify JSON output if object has
-      // more than one key 
-      if (Object.keys(jsonObj).length > 1) {
-        $(this).text(jsonPretty);
-      }
-    });
-    $('#tabs').tab();
-  });
-</script>
 {% endif %} <div class="container-fluid">
   {% if action == "add" %}<h1>Add Employee</h1>{% endif %}
   {% if action == "edit" %}<h1>Edit Employee</h1>{% endif %}
@@ -95,8 +78,26 @@ pre.prettyprint {
       {% endif %}
   </div>
 </div>
+{%- endblock %}
 
-
-<script type="text/javascript">
-</script>    
-{% endblock %}
+{% block scripts -%}
+{{ super() }}
+<script>
+  $(document).ready(function() {
+    $("input[type='text']").change(function() {
+      $("#change-form").removeClass("hidden");
+    });
+    $("td > pre").each(function() {
+      var jsonStr = $(this).text();
+      var jsonObj = JSON.parse(jsonStr);
+      var jsonPretty = JSON.stringify(jsonObj, null, 2);
+      // Only prettify JSON output if object has
+      // more than one key 
+      if (Object.keys(jsonObj).length > 1) {
+        $(this).text(jsonPretty);
+      }
+    });
+    $('#tabs').tab();
+  });
+</script>
+{%- endblock %}
