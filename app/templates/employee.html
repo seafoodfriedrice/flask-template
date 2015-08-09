@@ -2,7 +2,6 @@
 {% block content -%}
 {{ super() }}
 {% if action == "edit" %}
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <style type="text/css">
 pre.prettyprint {
   border: 1px solid #ccc;
@@ -82,6 +81,7 @@ pre.prettyprint {
 
 {% block scripts -%}
 {{ super() }}
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script>
   $(document).ready(function() {
     $("input[type='text']").change(function() {
