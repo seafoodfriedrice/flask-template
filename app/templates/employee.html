@@ -17,7 +17,7 @@
 {{ super() }}
 <div class="container-fluid">
   {% if action == "add" %}<h1>Add Employee</h1>{% endif %}
-  {% if action == "edit" %}<h1>Edit Employee</h1>{% endif %}
+  {% if action == "edit" %}<h1>{{ employee.first_name }} {{ employee.last_name }}</h1>{% endif %}
   <!-- Change notes -->
   <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
       <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
