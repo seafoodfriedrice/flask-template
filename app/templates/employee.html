@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Employee Page{% endblock %}
+{% block styles %}
+  {{ super() }}
+  {% if action == "edit" %}
+    <style type="text/css">
+    pre.prettyprint {
+      border: none;
+      background: white;
+      margin-bottom: 0;
+    }
+    </style>
+  {% endif %} 
+{% endblock %}
 
 {% block content -%}
 {{ super() }}
-{% if action == "edit" %}
-<style type="text/css">
-pre.prettyprint {
-  border: none;
-  background: white;
-  margin-bottom: 0;
-}
-</style>
-{% endif %} <div class="container-fluid">
+<div class="container-fluid">
   {% if action == "add" %}<h1>Add Employee</h1>{% endif %}
   {% if action == "edit" %}<h1>Edit Employee</h1>{% endif %}
   <!-- Change notes -->
