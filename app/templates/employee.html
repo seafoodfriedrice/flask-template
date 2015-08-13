@@ -83,7 +83,7 @@
           </thead>
           <tbody>
           {% if employee.change_notes %}
-            {% for change_note in employee.change_notes %}
+            {% for change_note in employee.change_notes|sort(attribute='date', reverse=True) %}
             <tr>
               <td>{{ change_note.date }}</td>
               <td><pre class="prettyprint">{{ change_note.old_value|safe }}</pre></td>
