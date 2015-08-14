@@ -1,11 +1,13 @@
 from os import environ
 from datetime import datetime
 from getpass import getpass
+
 from werkzeug.security import generate_password_hash
 from werkzeug.serving import run_simple
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate
 from flask.ext.migrate import MigrateCommand
+
 from app import app
 from app import db
 from app.models import Employee
