@@ -1,3 +1,5 @@
+import ssl
+
 from os import environ
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -12,7 +14,6 @@ db = SQLAlchemy(app)
 db.create_all()
 
 Bootstrap(app)
-
 
 from . import views
 from . import login

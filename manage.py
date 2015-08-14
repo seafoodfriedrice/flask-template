@@ -2,6 +2,7 @@ from os import environ
 from datetime import datetime
 from getpass import getpass
 from werkzeug.security import generate_password_hash
+from werkzeug.serving import run_simple
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate
 from flask.ext.migrate import MigrateCommand
@@ -16,7 +17,14 @@ manager = Manager(app)
 @manager.command
 def run():
     port = int(environ.get('PORT', 8080))
-    app.run(host='0.0.0.0', port=port)
+    # Normal method to run application without SSL
+    #app.run(host='0.0.0.0', port=port)
+
+    '''
+        Run application with SSL context, see more information at
+        http://werkzeug.pocoo.org/docs/0.10/serving/#quickstart
+    '''
+    run_simple('localhost', port, app, ssl_context=('app.crt', 'app.key'))
 
 
 @manager.command
